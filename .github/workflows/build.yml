@@ -27,6 +27,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: context.json
-          path: .
+          path: ./images
           retention-days: 3
           overwrite: true
