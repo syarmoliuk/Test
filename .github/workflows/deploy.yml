@@ -22,7 +22,7 @@ jobs:
           name: context.json
 
       - name: Get context data
-        uses: actions/github-scripts@v6
+        uses: actions/github-script@v7
         with:
           script: |
             let fs = require('fs');
