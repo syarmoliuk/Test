@@ -33,4 +33,5 @@ jobs:
 
   call_another_workflow:
     name: Call another jobs
+    needs: store_image_reference
     uses: syarmoliuk/test/.github/workflows/deploy.yml@main
