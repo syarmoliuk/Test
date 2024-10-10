@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Create an artifact with image-ref data
         env:
-          IMAGE_REF: "test_image_ref"
+          IMAGE_REF: "some_another_value"
           IMAGE: "test_image"
           IMAGE_TAG: "test_tag"
         run: |
