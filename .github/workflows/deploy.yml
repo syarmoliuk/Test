@@ -1,0 +1,49 @@
+name: 🟢 Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Build Docker image
+    types:
+      - completed
+  workflow_dispatch:
+
+run-name: deploy ${{ github.event.repository.name }} app
+
+
+jobs:
+  get-build-docker-image-context:
+    name: Get context
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: context.json
+
+      - name: Get context data
+        uses: actions/github-scripts@v7
+        with:
+          script: |
+            let fs = require('fs');
+            let data = fs.readFileSync('context.json');
+            return JSON.parse(data)
+    outputs:
+      image-ref: ${{fromJSON(steps.get-context-data.outputs.result).image-ref}}
+      image: ${{fromJSON(steps.get-context-data.outputs.result).image}}
+      image-tag: ${{fromJSON(steps.return-parsed-json.outputs.result).image-tag}}
+
+  print-context:
+    name: Print context
+    needs: get-build-docker-image-context
+    runs-on: ubuntu-latest
+    env:
+      REF: ${{needs.get-build-docker-image-context.outputs.image-ref}}
+      IMG: ${{needs.get-build-docker-image-context.outputs.image}}
+      TAG: ${{needs.get-build-docker-image-context.outputs.image-tag}}
+    steps:
+      - name: Get context and print it
+        run: |
+          echo "Image reference value is: $REF"
+          echo "Image value is: $IMG"
+          echo "Tag value is: $TAG"
