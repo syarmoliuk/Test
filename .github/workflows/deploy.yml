@@ -34,7 +34,7 @@ jobs:
     outputs:
       image-ref: ${{fromJSON(steps.get-context-data.outputs.result).image-ref}}
       image: ${{fromJSON(steps.get-context-data.outputs.result).image}}
-      image-tag: ${{fromJSON(steps.return-parsed-json.outputs.result).image-tag}}
+      image-tag: ${{fromJSON(steps.get-context-data.outputs.result).image-tag}}
 
   print-context:
     name: Print context
