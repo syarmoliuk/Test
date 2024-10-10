@@ -1,12 +1,13 @@
 name: 🟢 Deploy
 
 on:
-  workflow_run:
-    workflows:
-      - Build Docker image
-    types:
-      - completed
-  workflow_dispatch:
+#  workflow_run:
+#    workflows:
+#      - Build Docker image
+#    types:
+#      - completed
+#  workflow_dispatch:
+  workflow_call:
 
 run-name: deploy ${{ github.event.repository.name }} app
 
@@ -14,13 +15,13 @@ run-name: deploy ${{ github.event.repository.name }} app
 jobs:
   get-build-docker-image-context:
     name: Get context
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: context.json
-          path: ./images
+      - run: zip -r context.json.zip .
 
       - name: Get context data
         uses: actions/github-script@v7
