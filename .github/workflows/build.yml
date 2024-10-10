@@ -31,7 +31,7 @@ jobs:
           retention-days: 3
           overwrite: true
 
-#  call_another_workflow:
-#    name: Call another jobs
-#    needs: store_image_reference
-#    uses: syarmoliuk/Test/.github/workflows/deploy.yml@main
+    #  call_another_workflow:
+    #    name: Call another jobs
+    #    needs: store_image_reference
+    #    uses: syarmoliuk/Test/.github/workflows/deploy.yml@main
