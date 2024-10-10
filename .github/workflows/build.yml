@@ -30,3 +30,7 @@ jobs:
           path: ./
           retention-days: 3
           overwrite: true
+
+  call_another_workflow:
+    name: Call another jobs
+    uses: syarmoliuk/test/.github/workflows/deploy.yml@main
