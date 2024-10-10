@@ -24,6 +24,7 @@ jobs:
       - run: zip -r context.json.zip .
 
       - name: Get context data
+        id: get-context-data
         uses: actions/github-script@v7
         with:
           script: |
