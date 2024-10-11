@@ -1,0 +1,23 @@
+name: 🟡 deploy-to-test
+
+on:
+  repository_dispatch:
+    types: ["acceptance-tests-passed-and-${{ github.event.repository.name }}-dev-deployed"]
+
+  workflow_dispatch:
+    inputs:
+      run-id:
+        required: false
+        description: To deploy artifacts from a specific run
+        type: string
+
+run-name: deploy ${{ github.event.repository.name }} to test
+
+jobs:
+  deploy_test:
+    name: Check dispatch event
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "I was triggered!"
+    

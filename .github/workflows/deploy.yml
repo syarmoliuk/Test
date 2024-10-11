@@ -66,3 +66,16 @@ jobs:
           echo "Image reference value is: $REF"
 #          echo "Image value is: $IMG"
 #          echo "Tag value is: $TAG"
+
+
+  send-event-for-deployment-on-test-env:
+    needs: deploy-service-to-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send dispatch event for deploy udbud on test env
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GA_GITHUB_TOKEN }}
+          event-type: acceptance-tests-passed-and-${{ github.event.repository.name }}-dev-deployed
+          client-payload: '{ "github": ${{ toJson(github) }}, "CALLER_REPO_FULL_NAME": "${{ github.event.repository.full_name }}" , "CALLER_REPO_NAME" : "${{ github.event.repository.name }}" , "RUN_ID": "${{ github.run_id }}"}'
+
