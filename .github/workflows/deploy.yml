@@ -27,7 +27,7 @@ jobs:
 
       - name: Read image reference
         run:  |
-          echo "IMAGE_REF=$(cat ECR_IMAGE_REF)" >> $GITHUB_ENV
+          echo "image-ref=$(cat ECR_IMAGE_REF)" >> $GITHUB_OUTPUT
 
 #      - name: Check directory files
 #          run: ls -all
@@ -56,7 +56,7 @@ jobs:
     needs: get-build-docker-image-context
     runs-on: ubuntu-latest
     env:
-      REF: ${{env.IMAGE_REF}}
+      REF: ${{needs.get-build-docker-image-context.outputs.image-ref}}
 #      IMG: ${{needs.get-build-docker-image-context.outputs.image}}
 #      TAG: ${{needs.get-build-docker-image-context.outputs.image-tag}}
     steps:
