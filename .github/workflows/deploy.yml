@@ -23,7 +23,13 @@ jobs:
           name: ${{github.event.repository.name}}
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-#          path: ./
+#          path:
+
+      - name: Check directory files
+        run: ls -all
+
+      - name: Rename artifacts
+        run: mv ECR_IMAGE_REF ${{github.event.repository.name}}.zip
 
       - name: Check directory files
         run: ls -all
@@ -36,12 +42,10 @@ jobs:
         with:
           script: |
             let fs = require('fs');
-            let data = fs.readFileSync('context.json');
+            let data = fs.readFileSync('ECR_IMAGE_REF');
             return JSON.parse(data)
     outputs:
-      image-ref: ${{fromJSON(steps.get-context-data.outputs.result).image-ref}}
-      image: ${{fromJSON(steps.get-context-data.outputs.result).image}}
-      image-tag: ${{fromJSON(steps.get-context-data.outputs.result).image-tag}}
+      image-ref: ${{steps.get-context-data.outputs.result}}
 
   print-context:
     name: Print context
@@ -49,11 +53,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REF: ${{needs.get-build-docker-image-context.outputs.image-ref}}
-      IMG: ${{needs.get-build-docker-image-context.outputs.image}}
-      TAG: ${{needs.get-build-docker-image-context.outputs.image-tag}}
+#      IMG: ${{needs.get-build-docker-image-context.outputs.image}}
+#      TAG: ${{needs.get-build-docker-image-context.outputs.image-tag}}
     steps:
       - name: Get context and print it
         run: |
           echo "Image reference value is: $REF"
-          echo "Image value is: $IMG"
-          echo "Tag value is: $TAG"
+#          echo "Image value is: $IMG"
+#          echo "Tag value is: $TAG"
