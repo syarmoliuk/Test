@@ -69,7 +69,7 @@ jobs:
 
 
   send-event-for-deployment-on-test-env:
-    needs: deploy-service-to-dev
+    needs: get-build-docker-image-context
     runs-on: ubuntu-latest
     steps:
       - name: Send dispatch event for deploy udbud on test env
