@@ -25,6 +25,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 #          path:
 
+      - name: Check downloaded file
+        run: cat ECR_IMAGE_REF
+
       - name: Check directory files
         run: ls -all
 
