@@ -25,37 +25,38 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 #          path:
 
-      - name: Check downloaded file
-        run: cat ECR_IMAGE_REF
+      - name: Read image reference
+        run:  |
+          echo "IMAGE_REF=$(cat ECR_IMAGE_REF)" >> $GITHUB_ENV
 
-      - name: Check directory files
-        run: ls -all
-
-      - name: Rename artifacts
-        run: mv ECR_IMAGE_REF ${{github.event.repository.name}}.zip
-
-      - name: Check directory files
-        run: ls -all
-
-      - run: unzip ${{github.event.repository.name}}.zip .
-
-      - name: Get context data
-        id: get-context-data
-        uses: actions/github-script@v7
-        with:
-          script: |
-            let fs = require('fs');
-            let data = fs.readFileSync('ECR_IMAGE_REF');
-            return JSON.parse(data)
-    outputs:
-      image-ref: ${{steps.get-context-data.outputs.result}}
+#      - name: Check directory files
+#          run: ls -all
+#
+#        - name: Rename artifacts
+#          run: mv ECR_IMAGE_REF ${{github.event.repository.name}}.zip
+#
+#        - name: Check directory files
+#          run: ls -all
+#
+#        - run: unzip ${{github.event.repository.name}}.zip .
+#
+#        - name: Get context data
+#          id: get-context-data
+#          uses: actions/github-script@v7
+#          with:
+#            script: |
+#              let fs = require('fs');
+#              let data = fs.readFileSync('ECR_IMAGE_REF');
+#              return JSON.parse(data)
+#    outputs:
+#      image-ref: ${{steps.get-context-data.outputs.result}}
 
   print-context:
     name: Print context
     needs: get-build-docker-image-context
     runs-on: ubuntu-latest
     env:
-      REF: ${{needs.get-build-docker-image-context.outputs.image-ref}}
+      REF: ${{env.IMAGE_REF}}
 #      IMG: ${{needs.get-build-docker-image-context.outputs.image}}
 #      TAG: ${{needs.get-build-docker-image-context.outputs.image-tag}}
     steps:
