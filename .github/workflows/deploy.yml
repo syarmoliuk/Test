@@ -23,12 +23,12 @@ jobs:
           name: ${{github.event.repository.name}}
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: ./ECR_IMAGE_REF
+#          path: ./
 
       - name: Check directory files
         run: ls -all
 
-      - run: zip -r context.json.zip .
+      - run: unzip ${{github.event.repository.name}}.zip .
 
       - name: Get context data
         id: get-context-data
