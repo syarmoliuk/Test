@@ -15,14 +15,19 @@ run-name: deploy ${{ github.event.repository.name }} app
 jobs:
   get-build-docker-image-context:
     name: Get context
-#    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    #    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: context.json
+          name: ${{github.event.repository.name}}
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./ECR_IMAGE_REF
+
+      - name: Check directory files
+        run: ls -all
+
       - run: zip -r context.json.zip .
 
       - name: Get context data
