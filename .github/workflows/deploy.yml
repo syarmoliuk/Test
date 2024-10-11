@@ -26,6 +26,7 @@ jobs:
 #          path:
 
       - name: Read image reference
+        id: read_image_reference
         run:  |
           echo "image-ref=$(cat ECR_IMAGE_REF)" >> $GITHUB_OUTPUT
 
@@ -48,8 +49,8 @@ jobs:
 #              let fs = require('fs');
 #              let data = fs.readFileSync('ECR_IMAGE_REF');
 #              return JSON.parse(data)
-#    outputs:
-#      image-ref: ${{steps.get-context-data.outputs.result}}
+    outputs:
+      image-ref: ${{steps.read_image_reference.outputs.image-ref}}
 
   print-context:
     name: Print context
